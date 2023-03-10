@@ -1,0 +1,37 @@
+{
+    "root": true,
+    "env": {
+        "node": true
+    },
+    "extends": [
+        "plugin:vue/vue3-strongly-recommended",
+        "plugin:vue/vue3-recommended",
+        "plugin:vue/vue3-essential",
+        "eslint:recommended"
+    ],
+    "rules": {
+        "vue/html-indent": ["warn", 4, {}],
+        "vue/html-closing-bracket-newline": ["warn", {
+            "singleline": "never",
+            "multiline": "never"
+        }],
+        "vue/html-self-closing": ["warn", {
+            "html": {
+                "void": "always",
+                "normal": "never",
+                "component": "never"
+            },
+            "svg": "always",
+            "math": "always"
+        }],
+        "vue/require-default-prop": "off",
+        "vue/multi-word-component-names": "off",
+        "semi": "error",
+        "semi-spacing": "error",
+        "semi-style": "warn",
+        "comma-dangle": ["error", "always-multiline"],
+        "comma-spacing": "error",
+        "comma-style": "warn",
+        "quotes": ["warn", "single"]
+    }
+}
