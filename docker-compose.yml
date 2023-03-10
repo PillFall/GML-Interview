@@ -1,11 +1,11 @@
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.2
+            context: ./docker
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.2/app
+        image: gml/app:latest
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -25,7 +25,7 @@ services:
             - meilisearch
             - mailpit
     pgsql:
-        image: 'postgres:15'
+        image: 'postgres:15-alpine'
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
         environment:
