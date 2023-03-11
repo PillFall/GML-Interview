@@ -3,9 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -21,6 +25,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
+        'identifier',
+        'country',
+        'mobile',
+        'address',
         'email',
         'password',
     ];
@@ -43,4 +52,56 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'full_name',
+    ];
+
+    /**
+     * Get the identifier attribute.
+     */
+    public function identifier(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+                return 'CC ' . $value;
+            },
+        );
+    }
+
+    /**
+     * Get the country attribute.
+     */
+    public function country(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value) {
+
+                $country = Cache::remember($value, 7200, function () use ($value) {
+                    return Http::acceptJson()
+                        ->get("https://restcountries.com/v3.1/alpha/{$value}?fields=translations")
+                        ->collect()
+                        ->get('translations')['spa']['official'];
+                });
+                return $country;
+            },
+        );
+    }
+
+    /**
+     * Get the full name attribute
+     */
+    public function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return collect([$this['name'], $this['surname']])->join(' ');
+            },
+        );
+    }
 }
