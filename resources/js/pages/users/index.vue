@@ -27,9 +27,9 @@ inertia-head(title="Listado de Usuarios")
             tbody
                 tr(v-for="user in users.data")
                     td {{ user.full_name }}
-                    td {{ user.identifier }}
+                    td {{ user.identifier_display }}
                     td {{ user.email }}
-                    td {{ user.country }}
+                    td {{ user.country_display }}
                     td {{ user.address }}
                     td {{ user.mobile }}
                     td {{ user.category.name }}

@@ -39,7 +39,7 @@ inertia-head(:title="user.full_name")
                     p.title.is-5 Información Basica
                     p #[strong Nombres:] {{ user.name }}
                     p #[strong Apellidos:] {{ user.surname }}
-                    p #[strong Identificación:] {{ user.identifier }}
+                    p #[strong Identificación:] {{ user.identifier_display }}
                     p #[strong Categoría:] {{ user.category.name }}
 
         .column
@@ -52,7 +52,7 @@ inertia-head(:title="user.full_name")
             .box
                 .content
                     p.title.is-5 Información de Ubicación
-                    p #[strong País:] {{ user.country }}
+                    p #[strong País:] {{ user.country_display }}
                     p #[strong Dirección:] {{ user.address }}
 </template>
 

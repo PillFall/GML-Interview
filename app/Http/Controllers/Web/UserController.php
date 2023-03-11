@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\User\IndexRequest;
 use App\Http\Requests\Web\User\StoreRequest;
+use App\Http\Requests\Web\User\UpdateRequest;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
@@ -86,17 +87,47 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        $categories = Category::all();
+
+        $countries = Cache::remember('countries', 7200, function () {
+            return Http::acceptJson()
+                ->get('https://restcountries.com/v3.1/subregion/South America?fields=cca3,translations')
+                ->collect();
+        });
+
+        return inertia('users/edit')->with([
+            'user' => $user,
+            'categories' => $categories,
+            'countries' => $countries,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, User $user)
     {
-        //
+        $user->update([
+            'name' => $request->validated('name'),
+            'surname' => $request->validated('surname'),
+            'identifier' => $request->validated('identifier'),
+            'category_id' => $request->validated('category'),
+            'mobile' => $request->validated('mobile'),
+            'email' => $request->validated('email'),
+            'country' => $request->validated('country'),
+            'address' => $request->validated('address'),
+        ]);
+
+        session()->flash('status', [
+            'level' => 'success',
+            'message' => 'Usuario actualizado exitosamente',
+        ]);
+
+        return redirect()->route('users.show', [
+            'user' => $user,
+        ]);
     }
 
     /**

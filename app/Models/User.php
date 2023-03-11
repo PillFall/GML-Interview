@@ -63,6 +63,8 @@ class User extends Authenticatable
      */
     protected $appends = [
         'full_name',
+        'country_display',
+        'identifier_display',
     ];
 
     /**
@@ -86,7 +88,7 @@ class User extends Authenticatable
     /**
      * Get the identifier attribute.
      */
-    public function identifier(): Attribute
+    public function identifierDisplay(): Attribute
     {
         return Attribute::make(
             get: function ($value) {
@@ -98,17 +100,19 @@ class User extends Authenticatable
     /**
      * Get the country attribute.
      */
-    public function country(): Attribute
+    public function countryDisplay(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
+                $code = $this['country'];
 
-                $country = Cache::remember($value, 7200, function () use ($value) {
+                $country = Cache::remember($code, 7200, function () use ($code) {
                     return Http::acceptJson()
-                        ->get("https://restcountries.com/v3.1/alpha/{$value}?fields=translations")
+                        ->get("https://restcountries.com/v3.1/alpha/{$code}?fields=translations")
                         ->collect()
                         ->get('translations')['spa']['official'];
                 });
+
                 return $country;
             },
         );
