@@ -1,5 +1,18 @@
 <template lang="pug">
 inertia-head(:title="user.full_name")
+.modal(:class="{'is-active': deleteConfirm}")
+    .modal-background
+    .modal-card.is-danger
+        header.modal-card-head
+            p.modal-card-title ¿Eliminar el usuario {{ user.full_name }}?
+            button.delete(@click="deleteConfirm = false")
+        section.modal-card-body
+            .content
+                p Esta apunto de eliminar el usuario #[strong {{ user.full_name }}].
+                p Tenga en cuenta que esta acción es inreversible.
+        footer.modal-card-foot
+            button.button.is-danger(@click="deleteUser") Confirmar
+
 .section
     .level
         .level-left
@@ -13,6 +26,11 @@ inertia-head(:title="user.full_name")
                     span.icon.is-small
                         font-awesome-icon(icon="pencil")
                     span Editar
+            .level-item
+                a.button.is-danger(@click="deleteConfirm = true")
+                    span.icon.is-small
+                        font-awesome-icon(icon="trash")
+                    span Eliminar
 
     .columns
         .column
@@ -53,6 +71,18 @@ export default {
     layout: WebLayout,
     props: {
         user: Object,
+    },
+    data() {
+        return {
+            deleteConfirm: false,
+        };
+    },
+    methods: {
+        deleteUser() {
+            return this.$inertia.delete(this.$route('users.destroy', {
+                user: this.user.id,
+            }));
+        },
     },
 };
 </script>
