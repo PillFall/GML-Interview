@@ -22,7 +22,15 @@ class UserController extends Controller
      */
     public function index(IndexRequest $request): Response
     {
-        $users = User::paginate();
+        if ($request->filled('q')) {
+            $usersQuery = User::search($request->validated('q'));
+        } else {
+            $usersQuery = User::query();
+        }
+        $users = $usersQuery->paginate()
+            ->appends([
+                'q' => $request->validated('q'),
+            ]);
 
         return inertia('users/index')->with([
             'users' => $users,

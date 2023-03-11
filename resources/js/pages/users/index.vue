@@ -7,6 +7,14 @@ inertia-head(title="Listado de Usuarios")
                 h1.title Listado de Usuarios
         .level-right
             .level-item
+                .field.has-addons
+                    .control.has-icons-left
+                        span.icon.is-small
+                            font-awesome-icon(icon="search")
+                        input.input.is-expanded(v-model="query" type="search")
+                    .control
+                        inertia-link.button(:href="$route('users.index', params)") Buscar
+            .level-item
                 inertia-link.button.is-success(:href="$route('users.create')")
                     span.icon.is-small
                         font-awesome-icon(icon="plus")
@@ -70,6 +78,19 @@ export default {
     created() {
         this.users.links.shift();
         this.users.links.pop();
-    }
+    },
+    data() {
+        return {
+            query: this.$route().params['q'],
+        };
+    },
+    computed: {
+        params() {
+            return {
+                ...this.$route().params,
+                q: this.query,
+            };
+        },
+    },
 };
 </script>
