@@ -85,7 +85,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
         ],
 
@@ -120,4 +120,15 @@ return [
         ],
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admininstrator Mail
+    |--------------------------------------------------------------------------
+    |
+    | This mail is used every time and event is dispatched with a emailable
+    | load to notify the administrator of the application.
+    |
+    */
+    'admin_mail' => 'admin@example.com',
 ];
