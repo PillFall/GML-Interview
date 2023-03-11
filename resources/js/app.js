@@ -37,5 +37,7 @@ createInertiaApp({
         vue.config.globalProperties.$route = window.route;
         vue.mount(el);
     },
-    progress: null,
+    progress: {
+        includeCSS: false,
+    },
 });
