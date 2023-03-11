@@ -41,6 +41,7 @@ class StoreRequest extends FormRequest
             'identifier' => [
                 'required',
                 'string',
+                'unique:users,identifier',
             ],
             'category' => [
                 'required',
