@@ -10,7 +10,7 @@ nav.navbar.is-primary
 
     .navbar-menu(ref="navbarMenu")
         .navbar-start
-            a.navbar-item Usuarios
+            inertia-link.navbar-item(:href="$route('users.index')") Usuarios
         .navbar-end
             a.navbar-item
                 span.icon.is-medium
