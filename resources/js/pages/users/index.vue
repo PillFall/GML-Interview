@@ -22,6 +22,7 @@ inertia-head(title="Listado de Usuarios")
                     th País
                     th Dirección
                     th Télefono
+                    th Categoría
                     th
             tbody
                 tr(v-for="user in users.data")
@@ -31,6 +32,7 @@ inertia-head(title="Listado de Usuarios")
                     td {{ user.country }}
                     td {{ user.address }}
                     td {{ user.mobile }}
+                    td {{ user.category.name }}
                     td
                         .buttons.are-small
                             inertia-link.button.is-link(:href="$route('users.show', { user: user.id })")

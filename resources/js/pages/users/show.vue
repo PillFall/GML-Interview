@@ -21,6 +21,7 @@
                     p #[strong Nombres:] {{ user.name }}
                     p #[strong Apellidos:] {{ user.surname }}
                     p #[strong Identificación:] {{ user.identifier }}
+                    p #[strong Categoría:] {{ user.category.name }}
 
         .column
             .box
