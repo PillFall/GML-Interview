@@ -91,8 +91,8 @@ class User extends Authenticatable
     public function identifierDisplay(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
-                return 'CC ' . $value;
+            get: function () {
+                return 'CC ' . $this['identifier'];
             },
         );
     }
