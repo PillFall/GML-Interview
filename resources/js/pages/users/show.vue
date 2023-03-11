@@ -1,4 +1,5 @@
 <template lang="pug">
+inertia-head(:title="user.full_name")
 .section
     .level
         .level-left
@@ -39,11 +40,15 @@
 
 <script>
 import WebLayout from '@/layouts/web/web.vue';
-import { Link as InertiaLink } from '@inertiajs/vue3';
+import {
+    Link as InertiaLink,
+    Head as InertiaHead,
+} from '@inertiajs/vue3';
 
 export default {
     components: {
         InertiaLink,
+        InertiaHead,
     },
     layout: WebLayout,
     props: {
