@@ -4,8 +4,14 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\User\IndexRequest;
+use App\Http\Requests\Web\User\StoreRequest;
+use App\Models\Category;
 use App\Models\User;
+use Illuminate\Auth\Events\Validated;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Inertia\Response;
 
 class UserController extends Controller
@@ -25,17 +31,46 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        $categories = Category::all();
+
+        $countries = Cache::remember('countries', 7200, function () {
+            return Http::acceptJson()
+                ->get('https://restcountries.com/v3.1/subregion/South America?fields=cca3,translations')
+                ->collect();
+        });
+
+        return inertia('users/create')->with([
+            'categories' => $categories,
+            'countries' => $countries,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request): RedirectResponse
     {
-        //
+        $user = User::create([
+            'name' => $request->validated('name'),
+            'surname' => $request->validated('surname'),
+            'identifier' => $request->validated('identifier'),
+            'category_id' => $request->validated('category'),
+            'mobile' => $request->validated('mobile'),
+            'email' => $request->validated('email'),
+            'country' => $request->validated('country'),
+            'address' => $request->validated('address'),
+        ]);
+
+        session()->flash('status', [
+            'level' => 'success',
+            'message' => 'Usuario creado exitosamente',
+        ]);
+
+        return redirect()->route('users.show', [
+            'user' => $user,
+        ]);
     }
 
     /**
