@@ -12,7 +12,7 @@ nav.navbar.is-primary
         .navbar-start
             inertia-link.navbar-item(:href="$route('users.index')") Usuarios
         .navbar-end
-            a.navbar-item
+            a.navbar-item(href="https://github.com/PillFall/GML-Interview" target="_blank")
                 span.icon.is-medium
                     font-awesome-icon(icon="fa-brands fa-github" size="2x")
 </template>
